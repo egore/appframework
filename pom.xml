@@ -19,6 +19,13 @@
 		</repository>
 	</distributionManagement>
 
+	<repositories>
+		<repository>
+			<id>repo-christophbrill-de</id>
+			<url>http://repo.christophbrill.de/</url>
+		</repository>
+	</repositories>
+
 	<scm>
 		<connection>scm:git:https://github.com/egore/appframework.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/egore/appframework.git</developerConnection>
