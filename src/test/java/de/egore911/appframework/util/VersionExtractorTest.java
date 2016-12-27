@@ -22,21 +22,21 @@ public class VersionExtractorTest {
 	@Test
 	public void testGetMavenVersion() {
 		ServletContext context = mockContext();
-		String mavenVersion = VersionExtractor.getMavenVersion(context, "de.egore911.capacity", "capacity-test");
+		String mavenVersion = VersionExtractor.getMavenVersion(context, "de.egore911.appframework", "appframework-test");
 		assertThat(mavenVersion, equalTo("0.0.1-SNAPSHOT"));
 	}
 
 	@Test
 	public void testGetGitRevision() {
 		ServletContext context = mockContext();
-		String mavenVersion = VersionExtractor.getGitVersion(context, "de.egore911.capacity", "capacity-test");
+		String mavenVersion = VersionExtractor.getGitVersion(context, "de.egore911.appframework", "appframework-test");
 		assertThat(mavenVersion, equalTo("fe4d7ae"));
 	}
 
 	@Test
 	public void testGetBuildTimestamp() {
 		ServletContext context = mockContext();
-		LocalDateTime buildTimestamp = VersionExtractor.getBuildTimestamp(context, "de.egore911.capacity", "capacity-test");
+		LocalDateTime buildTimestamp = VersionExtractor.getBuildTimestamp(context, "de.egore911.appframework", "appframework-test");
 		assertThat(buildTimestamp, equalTo(LocalDateTime.of(2016, 4, 26, 11, 20, 44)));
 	}
 
