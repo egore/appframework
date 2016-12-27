@@ -22,6 +22,7 @@ public class JerseyConfig extends ResourceConfig {
 		register(new AuthorizationFilterFeature());
 		register(new SubjectFactory());
 		register(new AuthInjectionBinder());
+		register(new JavaTimeParameterConverterProvider());
 	}
 
 }
