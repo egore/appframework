@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>de.egore911.appframework</groupId>
 		<artifactId>appframework-bom</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 	</parent>
 
 	<artifactId>appframework</artifactId>
