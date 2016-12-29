@@ -1,5 +1,6 @@
 package de.egore911.appframework.ui.rest;
 
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.secnod.shiro.jersey.AuthInjectionBinder;
 import org.secnod.shiro.jersey.AuthorizationFilterFeature;
@@ -23,6 +24,7 @@ public class JerseyConfig extends ResourceConfig {
 		register(new SubjectFactory());
 		register(new AuthInjectionBinder());
 		register(new JavaTimeParameterConverterProvider());
+		register(new MultiPartFeature());
 	}
 
 }

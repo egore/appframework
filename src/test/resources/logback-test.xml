@@ -8,7 +8,7 @@
 	</appender>
 
 	<logger name="jndi" level="INFO" />
-	<logger name="de.egore911.capacity" level="DEBUG" />
+	<logger name="de.egore911.appframework" level="DEBUG" />
 	<logger name="org.hibernate.tool.hbm2ddl.SchemaExport" level="OFF" />
 	<logger name="org.hibernate" level="WARN" />
 	<!-- <logger name="org.hibernate.SQL" level="DEBUG" />
