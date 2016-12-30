@@ -7,8 +7,8 @@ import java.util.concurrent.Executors;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -23,7 +23,6 @@ import org.xml.sax.SAXException;
 
 import de.egore911.appframework.util.FactoryHolder;
 import de.egore911.appframework.util.Permissions;
-import javax.servlet.ServletContextListener;
 
 public abstract class AbstractStartupListener implements ServletContextListener {
 
@@ -93,7 +92,5 @@ public abstract class AbstractStartupListener implements ServletContextListener 
 	}
 
 	protected abstract Enum<?>[] getPermissions();
-
-	protected abstract String getDatasourceJdniName();
 
 }
