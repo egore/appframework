@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import de.egore911.appframework.mapping.specification.OrphanArrayOrCollectionToCollection;
+import de.egore911.appframework.mapping.specification.OrphanMapToMap;
 import de.egore911.appframework.persistence.dao.RoleDao;
 import de.egore911.appframework.persistence.model.RoleEntity;
 import de.egore911.appframework.persistence.model.UserEntity;
@@ -21,28 +23,49 @@ import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ma.glasnost.orika.impl.generator.CodeGenerationStrategy;
+import ma.glasnost.orika.impl.generator.specification.ArrayOrCollectionToCollection;
+import ma.glasnost.orika.impl.generator.specification.MapToMap;
 import ma.glasnost.orika.metadata.Type;
 
 public class FactoryHolder {
 
-	public static final MapperFactory MAPPER_FACTORY = new DefaultMapperFactory.Builder().build();
+	public static final MapperFactory MAPPER_FACTORY;
 	public static ExecutorService EXECUTOR;
 	public static ScheduledExecutorService SCHEDULE_EXECUTOR;
 
 	static {
-		FactoryHolder.MAPPER_FACTORY.getConverterFactory()
+
+		DefaultMapperFactory.Builder builder = new DefaultMapperFactory.Builder();
+		
+		CodeGenerationStrategy codeGenerationStrategy = builder.getCodeGenerationStrategy();
+
+		codeGenerationStrategy.addSpecification(
+				new OrphanArrayOrCollectionToCollection(),
+				CodeGenerationStrategy.Position.IN_PLACE_OF,
+				(Class) ArrayOrCollectionToCollection.class
+		);
+		codeGenerationStrategy.addSpecification(
+				new OrphanMapToMap(),
+				CodeGenerationStrategy.Position.IN_PLACE_OF,
+				(Class) MapToMap.class
+		);
+
+		MAPPER_FACTORY = builder.build();
+
+		MAPPER_FACTORY.getConverterFactory()
 				.registerConverter(new PassThroughConverter(ZonedDateTime.class));
 
-		FactoryHolder.MAPPER_FACTORY.getConverterFactory()
+		MAPPER_FACTORY.getConverterFactory()
 				.registerConverter(new PassThroughConverter(LocalDate.class));
 
-		FactoryHolder.MAPPER_FACTORY.getConverterFactory()
+		MAPPER_FACTORY.getConverterFactory()
 				.registerConverter(new PassThroughConverter(LocalTime.class));
 
-		FactoryHolder.MAPPER_FACTORY.getConverterFactory()
+		MAPPER_FACTORY.getConverterFactory()
 				.registerConverter(new PassThroughConverter(LocalDateTime.class));
 
-		FactoryHolder.MAPPER_FACTORY.getConverterFactory()
+		MAPPER_FACTORY.getConverterFactory()
 				.registerConverter(new BidirectionalConverter<DayOfWeek, Integer>() {
 					@Override
 					public Integer convertTo(DayOfWeek source, Type<Integer> destinationType) {
@@ -53,24 +76,23 @@ public class FactoryHolder {
 					public DayOfWeek convertFrom(Integer source, Type<DayOfWeek> destinationType) {
 						return source == null ? null : DayOfWeek.of(source);
 					}
-
 				});
 
-		FactoryHolder.MAPPER_FACTORY.classMap(User.class, UserEntity.class).byDefault()
-		.customize(new CustomMapper<User, UserEntity>() {
-			@Override
-			public void mapAtoB(User a, UserEntity b, MappingContext context) {
-				if (CollectionUtils.isNotEmpty(a.getRoleIds())) {
-					b.setRoles(new RoleDao().findByIds(a.getRoleIds()));
-				}
-			}
-
-			@Override
-			public void mapBtoA(UserEntity a, User b, MappingContext context) {
-				b.setPassword(null);
-				b.setRoleIds(a.getRoles().stream().map(RoleEntity::getId).collect(Collectors.toList()));
-			}
-		}).register();
+		MAPPER_FACTORY.classMap(User.class, UserEntity.class).byDefault()
+				.customize(new CustomMapper<User, UserEntity>() {
+					@Override
+					public void mapAtoB(User a, UserEntity b, MappingContext context) {
+						if (CollectionUtils.isNotEmpty(a.getRoleIds())) {
+							b.setRoles(new RoleDao().findByIds(a.getRoleIds()));
+						}
+					}
+		
+					@Override
+					public void mapBtoA(UserEntity a, User b, MappingContext context) {
+						b.setPassword(null);
+						b.setRoleIds(a.getRoles().stream().map(RoleEntity::getId).collect(Collectors.toList()));
+					}
+				}).register();
 
 	}
 }
