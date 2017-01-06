@@ -11,7 +11,18 @@ import javax.annotation.Nullable;
 
 public class AnnotationUtil {
 
-	public static String getIdProperty(Class<?> destinationType) {
+	public static class IdProperty {
+		public final String name;
+		public final Class<?> type;
+
+		public IdProperty(String name, Class<?> type) {
+			this.name = name;
+			this.type = type;
+		}
+
+	}
+
+	public static IdProperty getIdProperty(Class<?> destinationType) {
 
 		// Only check on entities
 		if (!isAnnotated(destinationType, "javax.persistence.Entity")) {
@@ -24,7 +35,7 @@ public class AnnotationUtil {
 			for (Method m : klass.getDeclaredMethods()) {
 				if (m.getName().startsWith("get") && isAnnotated(m, "javax.persistence.Id")
 						&& m.getParameters().length == 0) {
-					return m.getName() + "()";
+					return new IdProperty(m.getName() + "()", m.getReturnType());
 				}
 			}
 			klass = klass.getSuperclass();
@@ -37,14 +48,14 @@ public class AnnotationUtil {
 				if (isAnnotated(f, "javax.persistence.Id")) {
 					// If it is publicly accessible, return it
 					if (Modifier.isPublic(f.getModifiers())) {
-						return f.getName();
+						return new IdProperty(f.getName(), f.getType());
 					}
 					// Try to find the matching getter
 					String getterName = "get" + Character.toUpperCase(f.getName().charAt(0)) + f.getName().substring(1);
 					try {
 						Method getter = destinationType.getMethod(getterName, new Class[0]);
 						if (getter.getReturnType() == f.getType()) {
-							return getter.getName() + "()";
+							return new IdProperty(getter.getName() + "()", getter.getReturnType());
 						}
 					} catch (Exception exn) {
 						// Ok, annotated with @Id but has no getter, let's abort

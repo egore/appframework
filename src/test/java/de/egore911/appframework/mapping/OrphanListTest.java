@@ -16,8 +16,6 @@ import de.egore911.appframework.mapping.classes.MemberAnnotatedListClass;
 import de.egore911.appframework.mapping.classes.MethodAnnotatedListClass;
 import de.egore911.appframework.mapping.classes.PlainListClass;
 import de.egore911.appframework.util.FactoryHolder;
-import ma.glasnost.orika.OrikaSystemProperties;
-import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
 
 public class OrphanListTest {
 

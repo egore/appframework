@@ -23,6 +23,7 @@ import static de.egore911.appframework.mapping.specification.AnnotationUtil.getI
 import static ma.glasnost.orika.impl.generator.SourceCodeContext.append;
 import static ma.glasnost.orika.impl.generator.SourceCodeContext.statement;
 
+import de.egore911.appframework.mapping.specification.AnnotationUtil.IdProperty;
 import ma.glasnost.orika.MappingException;
 import ma.glasnost.orika.impl.generator.MultiOccurrenceVariableRef;
 import ma.glasnost.orika.impl.generator.SourceCodeContext;
@@ -69,14 +70,15 @@ public class OrphanArrayOrCollectionToCollection extends ArrayOrCollectionToColl
         } else {
             destType = newDest.type().getNestedType(0);
         }
-        String idProperty = getIdProperty(destType.getRawType());
+        IdProperty idProperty = getIdProperty(destType.getRawType());
 
         out.append(statement(newDest.declare(""+d)));
         if (d.isAssignable()) {
             out.append(statement(newDest.ifNull() + " {"));
             out.append(statement(newDest.assign(d.newInstance(source.size()))));
             // XXX ideally this should be done for arrays, too
-            if (s.isArray() || idProperty == null) {
+            // XXX and ideally this should work for primitive IDs, too, but javassist makes things complicated
+            if (s.isArray() || idProperty == null || idProperty.type.isPrimitive()) {
                 out.append("\n} else {\n");
                 out.append("try {");
                 out.append(statement("%s.clear()", newDest));
@@ -108,7 +110,8 @@ public class OrphanArrayOrCollectionToCollection extends ArrayOrCollectionToColl
             }
 
             // XXX ideally this should be done for arrays, too
-            if (idProperty != null) {
+            // XXX and ideally this should work for primitive IDs, too, but javassist makes things complicated
+            if (idProperty != null && !idProperty.type.isPrimitive()) {
                 out.append(statement(format("%s tmp_%s = mapperFacade.mapAs%s(%s, %s, %s, mappingContext)",
                         newDest.typeName(),
                         newDest.name(),
@@ -121,7 +124,7 @@ public class OrphanArrayOrCollectionToCollection extends ArrayOrCollectionToColl
                         // format("for (Object tmp_o : %s) {", newDest.name()),
                         format("for (java.util.Iterator iterator = %s.iterator(); iterator.hasNext(); ) {", newDest.name()),
                         format("    Object tmp_o = iterator.next()"),
-                        format("    Object tmp_id = ((%s) tmp_o).%s", destType.getName(), idProperty),
+                        format("    %s tmp_id = ((%s) tmp_o).%s", idProperty.type.getTypeName(), destType.getName(), idProperty.name),
                         format("    tmp_existing.put(tmp_id, tmp_o)"),
                         format("}\n"));
 
@@ -134,7 +137,7 @@ public class OrphanArrayOrCollectionToCollection extends ArrayOrCollectionToColl
                         // format("for (Object tmp_o : %s) {", newDest.name()),
                         format("for (java.util.Iterator iterator = tmp_%s.iterator(); iterator.hasNext(); ) {", newDest.name()),
                         format("    Object tmp_new_o = iterator.next()"),
-                        format("    Object tmp_id = ((%s) tmp_new_o).%s", newDest.elementTypeName(), idProperty),
+                        format("    %s tmp_id = ((%s) tmp_new_o).%s", idProperty.type.getTypeName(), newDest.elementTypeName(), idProperty.name),
                         format("    if (tmp_id != null) {"),
                         format("        %s tmp_old = (%s) tmp_existing.get(tmp_id)", d.elementTypeName(), d.elementTypeName()),
                         format("        if (tmp_old != null) {"),
