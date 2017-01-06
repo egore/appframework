@@ -16,4 +16,10 @@ public class UserDao extends AbstractDao<UserEntity> {
 		return new UserSelector();
 	}
 
+	public UserEntity findByLogin(String login) {
+		return createSelector()
+				.withLogin(login)
+				.find();
+	}
+
 }
