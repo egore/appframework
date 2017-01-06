@@ -119,8 +119,8 @@ public abstract class AbstractSelector<T> implements Serializable {
 
 	private Integer offset;
 	private Integer limit;
-	private String sortColumn;
-	private Boolean ascending;
+	protected String sortColumn;
+	protected Boolean ascending;
 
 	public AbstractSelector<T> withOffset(Integer offset) {
 		this.offset = offset;
