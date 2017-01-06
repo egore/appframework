@@ -24,6 +24,8 @@ package de.egore911.appframework.persistence.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -39,6 +41,7 @@ import de.egore911.appframework.persistence.listeners.ModifiedListener;
  */
 @MappedSuperclass
 @EntityListeners({ ModifiedListener.class })
+@Access(AccessType.PROPERTY)
 public abstract class DbObject<ID extends Serializable> implements Serializable {
 
 	private static final long serialVersionUID = -3422412128666825823L;
