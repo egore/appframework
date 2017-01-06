@@ -8,7 +8,7 @@
 	</parent>
 
 	<artifactId>appframework</artifactId>
-	<version>1.0.5</version>
+	<version>1.0.6-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
 	<description>Utility classes implement small prototype applications using Tomcat, Hibernate and Shiro</description>
 
@@ -29,7 +29,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/egore/appframework.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/egore/appframework.git</developerConnection>
-		<tag>1.0.5</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<build>
