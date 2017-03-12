@@ -198,7 +198,12 @@
 			<version>1.1</version>
 			<scope>provided</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${version.servlet}</version>
+			<scope>provided</scope>
+		</dependency>
 		<!-- Apache commons -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
