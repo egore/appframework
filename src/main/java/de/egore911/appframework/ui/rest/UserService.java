@@ -1,10 +1,14 @@
 package de.egore911.appframework.ui.rest;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Path;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.codec.Hex;
 import org.apache.shiro.crypto.hash.Sha1Hash;
 import org.apache.shiro.subject.Subject;
@@ -38,17 +42,38 @@ public class UserService extends AbstractResourceService<User, UserEntity> {
 	protected UserDao getDao() {
 		return new UserDao();
 	}
+	
+	@Override
+	@RequiresPermissions("SHOW_USERS")
+	public User getById(Integer id, Subject subject) {
+		return super.getById(id, subject);
+	}
 
 	@Override
+	@RequiresPermissions("SHOW_USERS")
+	public List<User> getByIds(List<Integer> ids, Integer offset, Integer limit, String sortColumn, Boolean ascending,
+			Subject subject, HttpServletResponse response) {
+		return super.getByIds(ids, offset, limit, sortColumn, ascending, subject, response);
+	}
+
+	@Override
+	@RequiresPermissions("ADMIN_USERS")
 	public User create(User user, @Auth Subject subject) {
 		hashPassword(user);
 		return super.create(user, subject);
 	}
 
 	@Override
+	@RequiresPermissions("ADMIN_USERS")
 	public void update(@Nonnull Integer id, User user, @Auth Subject subject) {
 		hashPassword(user);
 		super.update(id, user, subject);
+	}
+	
+	@Override
+	@RequiresPermissions("ADMIN_USERS")
+	public void delete(Integer id, Subject subject) {
+		super.delete(id, subject);
 	}
 
 	private void hashPassword(@Nullable User user) {
