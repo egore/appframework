@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -18,9 +19,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.shiro.subject.Subject;
 import org.secnod.shiro.jaxrs.Auth;
 
@@ -43,11 +44,22 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<T> getByIds(@QueryParam("ids") List<Integer> ids, @Auth Subject subject) {
-		if (CollectionUtils.isEmpty(ids)) {
-			return getMapper().mapAsList(getSelector(subject).findAll(), getDtoClass());
+	public List<T> getByIds(@QueryParam("ids") List<Integer> ids,
+			@QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit,
+			@QueryParam("sortColumn") String sortColumn, @QueryParam("ascending") Boolean ascending,
+			@Auth Subject subject, @Context HttpServletResponse response) {
+		AbstractResourceSelector<U> selector = (AbstractResourceSelector<U>) getSelector(subject)
+						.withIds(ids)
+						.withSortColumn(sortColumn)
+						.withAscending(ascending);
+		List<U> entities = selector
+				.withOffset(offset)
+				.withLimit(limit)
+				.findAll();
+		if (offset != null || limit != null) {
+			response.setHeader("Result-Count", Long.toString(selector.count()));
 		}
-		return getMapper().mapAsList(getSelector(subject).withIds(ids).findAll(), getDtoClass());
+		return getMapper().mapAsList(entities, getDtoClass());
 	}
 
 	@POST
