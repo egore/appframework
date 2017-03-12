@@ -28,6 +28,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -48,6 +49,9 @@ public abstract class AbstractSelector<T> implements Serializable {
 
 	private static final long serialVersionUID = 3479024193093886962L;
 
+	private LockModeType lockMode;
+	private FlushModeType flushMode;
+
 	private TypedQuery<T> buildQuery() {
 		EntityManager em = EntityManagerUtil.getEntityManager();
 		CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -57,7 +61,14 @@ public abstract class AbstractSelector<T> implements Serializable {
 		cq.where(predicates.toArray(new Predicate[predicates.size()]));
 		cq.orderBy(generateOrderList(builder, from));
 		cq.select(from);
-		return em.createQuery(cq);
+		TypedQuery<T> query = em.createQuery(cq);
+		if (lockMode != null) {
+			query.setLockMode(lockMode);
+		}
+		if (flushMode != null) {
+			query.setFlushMode(flushMode);
+		}
+		return query;
 	}
 
 	@Nonnull
@@ -139,6 +150,16 @@ public abstract class AbstractSelector<T> implements Serializable {
 
 	public AbstractSelector<T> withAscending(Boolean ascending) {
 		this.ascending = ascending;
+		return this;
+	}
+
+	public AbstractSelector<T> withLockMode(LockModeType lockMode) {
+		this.lockMode = lockMode;
+		return this;
+	}
+
+	public AbstractSelector<T> withFlushMode(FlushModeType flushMode) {
+		this.flushMode = flushMode;
 		return this;
 	}
 
