@@ -23,10 +23,16 @@ package de.egore911.appframework.persistence.listeners;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.FlushModeType;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+
 import de.egore911.appframework.persistence.model.DbObject;
+import de.egore911.appframework.persistence.model.UserEntity;
+import de.egore911.appframework.persistence.selector.UserSelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -38,21 +44,27 @@ public class ModifiedListener {
 		o.setCreated(LocalDateTime.now());
 		o.setModified(o.getCreated());
 
-		//Subject user = SecurityUtils.getSubject();
-		//if (user.isAuthenticated()) {
-			//o.setCreatedBy(user.get);
-			//o.setModifiedBy(user);
-		//}
+		Subject subject = SecurityUtils.getSubject();
+		if (subject.isAuthenticated()) {
+			UserEntity user = loadUser(subject);
+			o.setCreatedBy(user);
+			o.setModifiedBy(user);
+		}
 	}
 
 	@PreUpdate
 	public void preUpdate(DbObject<?> o) {
 		o.setModified(LocalDateTime.now());
 
-		//Subject user = SecurityUtils.getSubject();
-		//if (user.isAuthenticated()) {
-			//o.setModifiedBy(user);
-		//}
+		Subject subject = SecurityUtils.getSubject();
+		if (subject.isAuthenticated()) {
+			UserEntity user = loadUser(subject);
+			o.setModifiedBy(user);
+		}
+	}
+
+	private UserEntity loadUser(Subject subject) {
+		return new UserSelector().withLogin(subject.getPrincipal().toString()).withFlushMode(FlushModeType.COMMIT).find();
 	}
 
 }
