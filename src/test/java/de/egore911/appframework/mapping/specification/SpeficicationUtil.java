@@ -17,6 +17,7 @@ import ma.glasnost.orika.metadata.Property;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeFactory;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class SpeficicationUtil {
 
 	public static VariableRef getMapVariableRefString(String property) {
