@@ -27,12 +27,15 @@ import java.time.LocalDateTime;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.BatchSize;
 
 import de.egore911.appframework.persistence.listeners.ModifiedListener;
 
@@ -67,8 +70,9 @@ public abstract class DbObject<ID extends Serializable> implements Serializable 
 		this.modified = modified;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "creator_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "creator_id", nullable = false)
+	@BatchSize(size = 10)
 	public UserEntity getCreatedBy() {
 		return createdBy;
 	}
@@ -77,8 +81,9 @@ public abstract class DbObject<ID extends Serializable> implements Serializable 
 		this.createdBy = createdBy;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "modificator_id")
+	@BatchSize(size = 10)
 	public UserEntity getModifiedBy() {
 		return modifiedBy;
 	}
