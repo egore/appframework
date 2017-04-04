@@ -43,12 +43,12 @@ public class FactoryHolder {
 		codeGenerationStrategy.addSpecification(
 				new OrphanArrayOrCollectionToCollection(),
 				CodeGenerationStrategy.Position.IN_PLACE_OF,
-				(Class) ArrayOrCollectionToCollection.class
+				ArrayOrCollectionToCollection.class
 		);
 		codeGenerationStrategy.addSpecification(
 				new OrphanMapToMap(),
 				CodeGenerationStrategy.Position.IN_PLACE_OF,
-				(Class) MapToMap.class
+				MapToMap.class
 		);
 
 		MAPPER_FACTORY = builder.build();
@@ -68,12 +68,12 @@ public class FactoryHolder {
 		MAPPER_FACTORY.getConverterFactory()
 				.registerConverter(new BidirectionalConverter<DayOfWeek, Integer>() {
 					@Override
-					public Integer convertTo(DayOfWeek source, Type<Integer> destinationType) {
+					public Integer convertTo(DayOfWeek source, Type<Integer> destinationType, MappingContext context) {
 						return source == null ? null : source.getValue();
 					}
 
 					@Override
-					public DayOfWeek convertFrom(Integer source, Type<DayOfWeek> destinationType) {
+					public DayOfWeek convertFrom(Integer source, Type<DayOfWeek> destinationType, MappingContext context) {
 						return source == null ? null : DayOfWeek.of(source);
 					}
 				});

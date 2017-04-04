@@ -98,8 +98,8 @@ public class OrphanMapToMap extends MapToMap {
                 entry.declare("entryIter.next()"),
                 newKey.declare(),
                 newVal.declare(),
-                code.mapFields(FieldMapBuilder.mapKeys(s.mapKeyType(), d.mapKeyType()), sourceKey, newKey, null, null),
-                code.mapFields(FieldMapBuilder.mapValues(s.mapValueType(), d.mapValueType()), sourceVal, newVal, null, null),
+                code.mapFields(FieldMapBuilder.mapKeys(s.mapKeyType(), d.mapKeyType()), sourceKey, newKey),
+                code.mapFields(FieldMapBuilder.mapValues(s.mapValueType(), d.mapValueType()), sourceVal, newVal),
                 format("%s.put(%s, %s)", newDest, newKey, newVal),
                 "\n",
                 "}");
