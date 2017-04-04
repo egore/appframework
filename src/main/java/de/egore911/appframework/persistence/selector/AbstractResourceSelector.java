@@ -46,4 +46,6 @@ public abstract class AbstractResourceSelector<T extends IntegerDbObject> extend
 		return this;
 	}
 
+	public abstract AbstractResourceSelector<T> withSearch(String search);
+
 }

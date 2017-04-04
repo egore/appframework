@@ -47,9 +47,11 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 	public List<T> getByIds(@QueryParam("ids") List<Integer> ids,
 			@QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit,
 			@QueryParam("sortColumn") String sortColumn, @QueryParam("ascending") Boolean ascending,
+			@QueryParam("search") String search,
 			@Auth Subject subject, @Context HttpServletResponse response) {
 		AbstractResourceSelector<U> selector = (AbstractResourceSelector<U>) getSelector(subject)
 						.withIds(ids)
+						.withSearch(search)
 						.withSortColumn(sortColumn)
 						.withAscending(ascending);
 		List<U> entities = selector

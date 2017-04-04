@@ -4,7 +4,13 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
@@ -46,9 +52,15 @@ public class RoleService extends AbstractResourceService<Role, RoleEntity> {
 
 	@Override
 	@RequiresPermissions("SHOW_ROLES")
-	public List<Role> getByIds(List<Integer> ids, Integer offset, Integer limit, String sortColumn, Boolean ascending,
-			Subject subject, HttpServletResponse response) {
-		return super.getByIds(ids, offset, limit, sortColumn, ascending, subject, response);
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<Role> getByIds(@QueryParam("ids") List<Integer> ids,
+			@QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit,
+			@QueryParam("sortColumn") String sortColumn, @QueryParam("ascending") Boolean ascending,
+			@QueryParam("search") String search,
+			@Auth Subject subject, @Context HttpServletResponse response) {
+		return super.getByIds(ids, offset, limit, sortColumn, ascending, search, subject, response);
 	}
 
 	@Override

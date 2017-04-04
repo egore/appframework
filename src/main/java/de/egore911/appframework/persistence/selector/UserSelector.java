@@ -18,27 +18,43 @@ public class UserSelector extends AbstractResourceSelector<UserEntity> {
 	private static final long serialVersionUID = -2302451622379464057L;
 
 	private String login;
+	private String search;
 
 	@Nonnull
 	@Override
 	protected Class<UserEntity> getEntityClass() {
 		return UserEntity.class;
 	}
-	
+
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<UserEntity> from,
 			CriteriaQuery<?> criteriaQuery) {
 		List<Predicate> predicates = super.generatePredicateList(builder, from, criteriaQuery);
-		
+
 		if (StringUtils.isNotEmpty(login)) {
 			predicates.add(builder.equal(from.get(UserEntity_.login), login));
 		}
-		
+
+		if (StringUtils.isNotEmpty(search)) {
+			String likePattern = '%' + search + '%';
+			predicates.add(builder.or(
+					builder.like(from.get(UserEntity_.login), likePattern),
+					builder.like(from.get(UserEntity_.name), likePattern),
+					builder.like(from.get(UserEntity_.email), likePattern)
+			));
+		}
+
 		return predicates;
 	}
 
 	public UserSelector withLogin(String login) {
 		this.login = login;
+		return this;
+	}
+
+	@Override
+	public UserSelector withSearch(String search) {
+		this.search = search;
 		return this;
 	}
 

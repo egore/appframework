@@ -19,16 +19,12 @@ public class RoleSelector extends AbstractResourceSelector<RoleEntity> {
 	private static final long serialVersionUID = -6277913360430683665L;
 
 	private String userLogin;
+	private String search;
 
 	@Nonnull
 	@Override
 	protected Class<RoleEntity> getEntityClass() {
 		return RoleEntity.class;
-	}
-
-	public RoleSelector withUserLogin(String userLogin) {
-		this.userLogin = userLogin;
-		return this;
 	}
 
 	@Override
@@ -40,7 +36,24 @@ public class RoleSelector extends AbstractResourceSelector<RoleEntity> {
 			predicates.add(builder.equal(from.join(RoleEntity_.users).get(UserEntity_.login), userLogin));
 		}
 
+		if (StringUtils.isNotEmpty(search)) {
+			String likePattern = '%' + search + '%';
+			predicates.add(builder.or(
+					builder.like(from.get(RoleEntity_.name), likePattern)
+			));
+		}
+
 		return predicates;
 	}
 
+	public RoleSelector withUserLogin(String userLogin) {
+		this.userLogin = userLogin;
+		return this;
+	}
+
+	@Override
+	public RoleSelector withSearch(String search) {
+		this.search = search;
+		return this;
+	}
 }
