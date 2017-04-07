@@ -27,6 +27,7 @@ import ma.glasnost.orika.impl.generator.CodeGenerationStrategy;
 import ma.glasnost.orika.impl.generator.specification.ArrayOrCollectionToCollection;
 import ma.glasnost.orika.impl.generator.specification.MapToMap;
 import ma.glasnost.orika.metadata.Type;
+import ma.glasnost.orika.unenhance.HibernateUnenhanceStrategy;
 
 public class FactoryHolder {
 
@@ -37,7 +38,7 @@ public class FactoryHolder {
 	static {
 
 		DefaultMapperFactory.Builder builder = new DefaultMapperFactory.Builder();
-		
+
 		CodeGenerationStrategy codeGenerationStrategy = builder.getCodeGenerationStrategy();
 
 		codeGenerationStrategy.addSpecification(
@@ -50,6 +51,12 @@ public class FactoryHolder {
 				CodeGenerationStrategy.Position.IN_PLACE_OF,
 				MapToMap.class
 		);
+
+		builder.unenhanceStrategy(new HibernateUnenhanceStrategy());
+	
+		// Comment in to generate classes for debugging purposes
+		// Files will be generated to .metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\xxx\WEB-INF\classes
+		// builder.compilerStrategy(new ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy());
 
 		MAPPER_FACTORY = builder.build();
 
