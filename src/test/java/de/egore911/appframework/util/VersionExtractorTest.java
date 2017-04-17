@@ -8,14 +8,14 @@ import java.time.LocalDateTime;
 import javax.servlet.ServletContext;
 
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 public class VersionExtractorTest {
 
 	private ServletContext mockContext() {
 		ServletContext context = Mockito.mock(ServletContext.class);
-		Mockito.when(context.getResourceAsStream(Matchers.anyString())).thenAnswer(invocation -> VersionExtractorTest.class.getResourceAsStream((String) invocation.getArguments()[0]));
+		Mockito.when(context.getResourceAsStream(ArgumentMatchers.anyString())).thenAnswer(invocation -> VersionExtractorTest.class.getResourceAsStream((String) invocation.getArguments()[0]));
 		return context;
 	}
 
