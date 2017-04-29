@@ -88,7 +88,7 @@ public class UserService extends AbstractResourceService<User, UserEntity> {
 		super.delete(id, subject);
 	}
 
-	private void hashPassword(@Nullable User user) {
+	protected static void hashPassword(@Nullable User user) {
 		if (user != null && StringUtils.isNotEmpty(user.getPassword())) {
 			user.setPassword(new String(Hex.encode(new Sha1Hash(user.getPassword()).getBytes())));
 		} else if (user != null && user.getId() != null) {
