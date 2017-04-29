@@ -26,7 +26,7 @@ public class DurationMeasuring {
 		buffer.append("::");
 		buffer.append(event);
 		logger.debug(buffer.toString());
-		
+
 		return nowMillis;
 	}
 

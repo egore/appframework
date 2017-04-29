@@ -53,7 +53,7 @@ public class FactoryHolder {
 		);
 
 		builder.unenhanceStrategy(new HibernateUnenhanceStrategy());
-	
+
 		// Comment in to generate classes for debugging purposes
 		// Files will be generated to .metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\xxx\WEB-INF\classes
 		// builder.compilerStrategy(new ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy());
@@ -93,7 +93,7 @@ public class FactoryHolder {
 							b.setRoles(new RoleDao().findByIds(a.getRoleIds()));
 						}
 					}
-		
+
 					@Override
 					public void mapBtoA(UserEntity a, User b, MappingContext context) {
 						b.setPassword(null);

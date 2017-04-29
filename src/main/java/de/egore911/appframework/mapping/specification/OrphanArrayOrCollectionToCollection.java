@@ -41,27 +41,27 @@ public class OrphanArrayOrCollectionToCollection extends ArrayOrCollectionToColl
 
     @Override
     public String generateMappingCode(FieldMap fieldMap, VariableRef source, VariableRef destination, SourceCodeContext code) {
-        
+
         StringBuilder out = new StringBuilder();
-        
+
         MultiOccurrenceVariableRef s = MultiOccurrenceVariableRef.from(source);
         MultiOccurrenceVariableRef d = MultiOccurrenceVariableRef.from(destination);
-        
+
         final Class<?> destinationElementClass = d.elementType().getRawType();
-        
+
         if (destinationElementClass == null) {
         	final String dc = destination.getOwner() == null ? "null" : destination.getOwner().rawType().getName();
             throw new MappingException("cannot determine runtime type of destination collection " + dc + "." + d.name());
         }
-        
+
         // Start check if source property ! = null
         out.append(s.ifNotNull() + " {\n");
-        
+
         /*
-         *  TODO: migrate this to create a new destination variable first; 
-         *  fill it, and then assign it to the destination using the setter. 
+         *  TODO: migrate this to create a new destination variable first;
+         *  fill it, and then assign it to the destination using the setter.
          */
-       
+
         MultiOccurrenceVariableRef newDest = new MultiOccurrenceVariableRef(d.type(), "new_" + d.name());
 
         Type<?> destType;
@@ -91,12 +91,12 @@ public class OrphanArrayOrCollectionToCollection extends ArrayOrCollectionToColl
         } else {
             out.append(statement("%s.clear()", newDest));
         }
-        
+
         if (s.isArray()) {
             if (code.isDebugEnabled()) {
                 code.debugField(fieldMap, "mapping " + s.elementTypeName() + "[] to Collection<" + d.elementTypeName() + ">");
             }
-            
+
             if (s.elementType().isPrimitive()) {
                 out.append("\n");
                 out.append(statement("%s.addAll(asList(%s));", newDest, s));
@@ -164,7 +164,7 @@ public class OrphanArrayOrCollectionToCollection extends ArrayOrCollectionToColl
         }
         if (fieldMap.getInverse() != null) {
             final MultiOccurrenceVariableRef inverse = new MultiOccurrenceVariableRef(fieldMap.getInverse(), "orikaCollectionItem");
-            
+
             if (fieldMap.getInverse().isCollection()) {
                 append(out,
                           format("for (java.util.Iterator orikaIterator = %s.iterator(); orikaIterator.hasNext();) { ", newDest),
@@ -172,7 +172,7 @@ public class OrphanArrayOrCollectionToCollection extends ArrayOrCollectionToColl
                           format("    %s { %s; }", inverse.ifNull(), inverse.assignIfPossible(inverse.newCollection())),
                           format("    %s.add(%s)", inverse, d.owner()),
                           "}");
-                
+
             } else if (fieldMap.getInverse().isArray()) {
                 out.append(" // TODO support array");
             } else {
@@ -181,20 +181,20 @@ public class OrphanArrayOrCollectionToCollection extends ArrayOrCollectionToColl
                         format("    %s orikaCollectionItem = (%s) orikaIterator.next();", d.elementTypeName(), d.elementTypeName()),
                         inverse.assign(d.owner()),
                         "}");
-                
+
             }
         }
         // End check if source property ! = null
         if (d.isAssignable()) {
             out.append(statement(d.assign(newDest)));
         }
-        
+
         String assignNull = String.format("%s {\n%s;\n}", d.ifNotNull(), d.assignIfPossible("null"));
         String mapNull = shouldMapNulls(fieldMap, code) ? format(" else {\n %s;\n}", assignNull): "";
-        
+
         append(out, "}" + mapNull);
-        
+
         return out.toString();
     }
-    
+
 }

@@ -43,21 +43,21 @@ public class OrphanMapToMap extends MapToMap {
 
     @Override
     public String generateMappingCode(FieldMap fieldMap, VariableRef source, VariableRef destination, SourceCodeContext code) {
-        
+
         MultiOccurrenceVariableRef d = MultiOccurrenceVariableRef.from(destination);
         MultiOccurrenceVariableRef s = MultiOccurrenceVariableRef.from(source);
-        
+
         if (code.isDebugEnabled()) {
-            code.debugField(fieldMap, "mapping from Map<" + source.type().getNestedType(0) + ", " + 
-            source.type().getNestedType(1) + "> to Map<" + destination.type().getNestedType(0) + ", " + 
+            code.debugField(fieldMap, "mapping from Map<" + source.type().getNestedType(0) + ", " +
+            source.type().getNestedType(1) + "> to Map<" + destination.type().getNestedType(0) + ", " +
             destination.type().getNestedType(1) + ">");
         }
-        
+
         StringBuilder out = new StringBuilder();
-        
+
         out.append(s.ifNotNull());
         out.append("{\n");
-        
+
         MultiOccurrenceVariableRef newDest = new MultiOccurrenceVariableRef(destination.type(), "new_" + destination.name());
 
         // Try to reuse the existing map
@@ -82,8 +82,8 @@ public class OrphanMapToMap extends MapToMap {
         } else {
             out.append(statement("%s.clear()", newDest));
         }
-        
-        
+
+
         VariableRef newKey = new VariableRef(d.mapKeyType(), "new" + StringUtil.capitalize(d.name()) + "Key");
         VariableRef newVal = new VariableRef(d.mapValueType(), "new" + StringUtil.capitalize(d.name()) + "Val");
         VariableRef entry = new VariableRef(TypeFactory.valueOf(Map.Entry.class), "source" + StringUtil.capitalize(d.name()) + "Entry");
@@ -103,15 +103,15 @@ public class OrphanMapToMap extends MapToMap {
                 format("%s.put(%s, %s)", newDest, newKey, newVal),
                 "\n",
                 "}");
-        
+
         if (d.isAssignable()) {
             out.append(statement(d.assign(newDest)));
         }
-        
+
         String mapNull = shouldMapNulls(fieldMap, code) ? format(" else {\n %s;\n}", d.assignIfPossible("null")): "";
         append(out, "}" + mapNull);
-        
+
         return out.toString();
     }
-    
+
 }

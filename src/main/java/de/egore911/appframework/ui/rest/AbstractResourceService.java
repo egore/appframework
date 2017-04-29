@@ -35,7 +35,7 @@ import de.egore911.persistence.dao.AbstractDao;
 import de.egore911.persistence.util.EntityManagerUtil;
 
 public abstract class AbstractResourceService<T extends AbstractDto, U extends IntegerDbObject> extends AbstractService {
-	
+
 	protected abstract Class<T> getDtoClass();
 	protected abstract Class<U> getEntityClass();
 	protected abstract AbstractResourceSelector<U> getSelector(Subject subject);

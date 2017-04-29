@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Utility class to hold the current entity manager for the duration of a
  * request. Done using a {@link ThreadLocal}.
- * 
+ *
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class EntityManagerUtil {

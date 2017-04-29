@@ -48,7 +48,7 @@ public class UserService extends AbstractResourceService<User, UserEntity> {
 	protected UserDao getDao() {
 		return new UserDao();
 	}
-	
+
 	@Override
 	@RequiresPermissions("SHOW_USERS")
 	public User getById(Integer id, Subject subject) {
@@ -81,7 +81,7 @@ public class UserService extends AbstractResourceService<User, UserEntity> {
 		hashPassword(user);
 		super.update(id, user, subject);
 	}
-	
+
 	@Override
 	@RequiresPermissions("ADMIN_USERS")
 	public void delete(Integer id, Subject subject) {
