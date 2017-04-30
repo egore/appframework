@@ -19,6 +19,7 @@ public class UserSelector extends AbstractResourceSelector<UserEntity> {
 
 	private String login;
 	private String search;
+	private Integer pictureId;
 
 	@Nonnull
 	@Override
@@ -44,6 +45,10 @@ public class UserSelector extends AbstractResourceSelector<UserEntity> {
 			));
 		}
 
+		if (pictureId != null) {
+			predicates.add(builder.equal(from.get(UserEntity_.pictureId), pictureId));
+		}
+
 		return predicates;
 	}
 
@@ -55,6 +60,11 @@ public class UserSelector extends AbstractResourceSelector<UserEntity> {
 	@Override
 	public UserSelector withSearch(String search) {
 		this.search = search;
+		return this;
+	}
+
+	public UserSelector withPictureId(Integer pictureId) {
+		this.pictureId = pictureId;
 		return this;
 	}
 

@@ -10,10 +10,12 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class UserEntity_ extends de.egore911.appframework.persistence.model.IntegerDbObject_ {
 
 	public static volatile SingularAttribute<UserEntity, String> password;
+	public static volatile SingularAttribute<UserEntity, Integer> pictureId;
 	public static volatile ListAttribute<UserEntity, RoleEntity> roles;
 	public static volatile SingularAttribute<UserEntity, String> name;
 	public static volatile SingularAttribute<UserEntity, String> login;
 	public static volatile SingularAttribute<UserEntity, String> email;
+	public static volatile SingularAttribute<UserEntity, BinaryDataEntity> picture;
 
 }
 

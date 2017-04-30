@@ -24,11 +24,13 @@ package de.egore911.appframework.persistence.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -48,6 +50,8 @@ public class UserEntity extends IntegerDbObject {
 	private String password;
 	private String email;
 	private List<RoleEntity> roles = new ArrayList<>(0);
+	private BinaryDataEntity picture;
+	private Integer pictureId;
 
 	@Column(nullable = false)
 	@NotNull
@@ -102,6 +106,25 @@ public class UserEntity extends IntegerDbObject {
 
 	public void setRoles(List<RoleEntity> roles) {
 		this.roles = roles;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "picture_id")
+	public BinaryDataEntity getPicture() {
+		return picture;
+	}
+
+	public void setPicture(BinaryDataEntity picture) {
+		this.picture = picture;
+	}
+
+	@Column(name = "picture_id", updatable = false, insertable = false)
+	public Integer getPictureId() {
+		return pictureId;
+	}
+
+	public void setPictureId(Integer pictureId) {
+		this.pictureId = pictureId;
 	}
 
 }
