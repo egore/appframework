@@ -23,6 +23,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.shiro.subject.Subject;
+import org.hibernate.exception.ConstraintViolationException;
 import org.secnod.shiro.jaxrs.Auth;
 
 import de.egore911.appframework.persistence.model.IntegerDbObject;
@@ -76,7 +77,11 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 		}
 		U entity = map(t);
 		validate(t, entity);
-		return getMapper().map(getDao().save(entity), getDtoClass());
+		try {
+			return getMapper().map(getDao().save(entity), getDtoClass());
+		} catch (ConstraintViolationException e) {
+			throw new BadArgumentException(e.getMessage());
+		}
 	}
 
 	protected U map(T t) {
