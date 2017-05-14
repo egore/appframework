@@ -189,7 +189,7 @@ public class OrphanArrayOrCollectionToCollection extends ArrayOrCollectionToColl
             out.append(statement(d.assign(newDest)));
         }
 
-        String assignNull = String.format("%s {\n%s;\n}", d.ifNotNull(), d.assignIfPossible("null"));
+        String assignNull = String.format("%s {\ntry {%s} catch(UnsupportedOperationException exn) {\n%s;}\n}", d.ifNotNull(), statement("%s.clear()", d), d.assignIfPossible("null"));
         String mapNull = shouldMapNulls(fieldMap, code) ? format(" else {\n %s;\n}", assignNull): "";
 
         append(out, "}" + mapNull);

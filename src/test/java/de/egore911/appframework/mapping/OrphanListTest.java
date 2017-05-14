@@ -6,6 +6,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsSame.sameInstance;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -78,6 +79,28 @@ public class OrphanListTest {
 		assertThat(destination.getMember(), sameInstance(member));
 		assertThat(destination.getMember(), hasSize(3));
 		assertThat(destination.getMember(), equalTo(expected));
+	}
+
+	@Test
+	public void testEntityMethodList_null() {
+		// Given: Our source without any member
+		MethodAnnotatedListClass source = new MethodAnnotatedListClass();
+		source.setMember(null);
+
+		// Given: Our destination with a single member
+		MethodAnnotatedListClass destination = new MethodAnnotatedListClass();
+		destination.getMember().addAll(Collections.singleton(new EntityMethodAnnotated("a")));
+
+		// Given: The instance before mapping
+		List<EntityMethodAnnotated> member = destination.getMember();
+
+		// When: We map from source to destination
+		FactoryHolder.MAPPER_FACTORY.getMapperFacade().map(source, destination);
+
+		// Then: The destination still has its member (necessary for orphan-removal)
+		assertThat(destination.getMember(), sameInstance(member));
+		// Then: The destination has no content in its member
+		assertThat(destination.getMember(), hasSize(0));
 	}
 
 }
