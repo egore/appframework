@@ -1,7 +1,7 @@
 package de.egore911.appframework.util;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 import java.time.LocalDateTime;
 
