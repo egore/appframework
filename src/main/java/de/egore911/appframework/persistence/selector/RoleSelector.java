@@ -16,8 +16,6 @@ import de.egore911.appframework.persistence.model.UserEntity_;
 
 public class RoleSelector extends AbstractResourceSelector<RoleEntity> {
 
-	private static final long serialVersionUID = -6277913360430683665L;
-
 	private String userLogin;
 	private String search;
 

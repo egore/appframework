@@ -19,8 +19,6 @@ import de.egore911.persistence.selector.AbstractSelector;
 
 public abstract class AbstractResourceSelector<T extends IntegerDbObject> extends AbstractSelector<T> {
 
-	private static final long serialVersionUID = -8692616820172675651L;
-
 	private Collection<Integer> ids;
 
 	@Override

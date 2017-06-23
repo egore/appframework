@@ -21,7 +21,6 @@
  */
 package de.egore911.persistence.selector;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,9 +44,7 @@ import de.egore911.persistence.util.EntityManagerUtil;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public abstract class AbstractSelector<T> implements Serializable {
-
-	private static final long serialVersionUID = 3479024193093886962L;
+public abstract class AbstractSelector<T> {
 
 	private LockModeType lockMode;
 	private FlushModeType flushMode;

@@ -15,8 +15,6 @@ import de.egore911.appframework.persistence.model.UserEntity_;
 
 public class UserSelector extends AbstractResourceSelector<UserEntity> {
 
-	private static final long serialVersionUID = -2302451622379464057L;
-
 	private String login;
 	private String search;
 	private Integer pictureId;

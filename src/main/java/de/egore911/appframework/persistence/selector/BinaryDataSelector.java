@@ -39,8 +39,6 @@ import de.egore911.persistence.selector.AbstractSelector;
  */
 public class BinaryDataSelector extends AbstractSelector<BinaryDataEntity> {
 
-	private static final long serialVersionUID = 2872006201650134090L;
-
 	@Override
 	protected Class<BinaryDataEntity> getEntityClass() {
 		return BinaryDataEntity.class;
