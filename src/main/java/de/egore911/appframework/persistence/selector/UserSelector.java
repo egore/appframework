@@ -18,6 +18,7 @@ public class UserSelector extends AbstractResourceSelector<UserEntity> {
 	private String login;
 	private String search;
 	private Integer pictureId;
+	private String name;
 
 	@Nonnull
 	@Override
@@ -47,6 +48,10 @@ public class UserSelector extends AbstractResourceSelector<UserEntity> {
 			predicates.add(builder.equal(from.get(UserEntity_.pictureId), pictureId));
 		}
 
+		if (StringUtils.isNotEmpty(name)) {
+			predicates.add(builder.equal(from.get(UserEntity_.name), name));
+		}
+
 		return predicates;
 	}
 
@@ -63,6 +68,11 @@ public class UserSelector extends AbstractResourceSelector<UserEntity> {
 
 	public UserSelector withPictureId(Integer pictureId) {
 		this.pictureId = pictureId;
+		return this;
+	}
+
+	public UserSelector withName(String name) {
+		this.name = name;
 		return this;
 	}
 
