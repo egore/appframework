@@ -22,4 +22,9 @@ public class UserDao extends AbstractDao<UserEntity> {
 				.find();
 	}
 
+	public UserEntity findByEmail(String email) {
+		return createSelector()
+				.withEmail(email)
+				.find();
+	}
 }
