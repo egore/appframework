@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>de.egore911.appframework</groupId>
 		<artifactId>appframework-bom</artifactId>
-		<version>1.1.4</version>
+		<version>1.1.5</version>
 	</parent>
 
 	<artifactId>appframework</artifactId>
@@ -133,11 +133,6 @@
 			<groupId>org.secnod.shiro</groupId>
 			<artifactId>shiro-jersey</artifactId>
 			<version>0.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.hk2</groupId>
-			<artifactId>hk2-api</artifactId>
-			<version>2.1.96</version>
 		</dependency>
 		<dependency>
 			<groupId>ma.glasnost.orika</groupId>
