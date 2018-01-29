@@ -41,7 +41,9 @@ public class ModifiedListener {
 
 	@PrePersist
 	public void prePersist(DbObject<?> o) {
-		o.setCreated(LocalDateTime.now());
+		if (o.getCreated() == null) {
+			o.setCreated(LocalDateTime.now());
+		}
 		o.setModified(o.getCreated());
 
 		Subject subject = SecurityUtils.getSubject();
