@@ -30,6 +30,9 @@ public class BinaryData extends AbstractDto {
 	private long size;
 	private String contentType;
 
+	public BinaryData() {
+	}
+
 	public BinaryData(Integer id, String filename, long size, String contentType) {
 		setId(id);
 		this.filename = filename;
