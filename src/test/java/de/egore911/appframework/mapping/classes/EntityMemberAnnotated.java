@@ -2,6 +2,7 @@ package de.egore911.appframework.mapping.classes;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class EntityMemberAnnotated {
@@ -25,10 +26,7 @@ public class EntityMemberAnnotated {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
+		return Objects.hash(id);
 	}
 
 	@Override
