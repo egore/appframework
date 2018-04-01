@@ -49,7 +49,7 @@ public class FlywayLocationsDetector {
 					flyway.setLocations("db/migration/pgsql");
 				} else {
 					throw new RuntimeException(
-							"Unsupported database detected, please report this: " + connection.toString());
+							"Unsupported database detected, please report this: " + connection);
 				}
 			} catch (SQLException e) {
 				LOG.error("Error opening connection :{}", e.getMessage(), e);
@@ -70,7 +70,7 @@ public class FlywayLocationsDetector {
 					flyway.setLocations("db/migration/pgsql");
 				} else {
 					throw new RuntimeException(
-							"Unsupported database detected, please report this: " + connection.toString());
+							"Unsupported database detected, please report this: " + connection);
 				}
 			} catch (SQLException e) {
 				LOG.error("Error opening connection :{}", e.getMessage(), e);
