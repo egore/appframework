@@ -37,7 +37,7 @@ public abstract class AbstractStartupListener implements ServletContextListener 
 		try {
 			InitialContext initialContext = new InitialContext();
 			DataSource dataSource;
-			try (InputStream stream = this.getClass().getResourceAsStream("/META-INF/persistence.xml")) {
+			try (InputStream stream = getClass().getResourceAsStream("/META-INF/persistence.xml")) {
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				Document doc = factory.newDocumentBuilder().parse(stream);
 				Node documentElement = doc.getDocumentElement();

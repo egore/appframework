@@ -130,7 +130,7 @@ public abstract class DbObject<ID extends Serializable> implements Serializable 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(this.getClass().getSimpleName());
+		builder.append(getClass().getSimpleName());
 		if (getId() != null) {
 			builder.append('@').append(getId());
 		} else {

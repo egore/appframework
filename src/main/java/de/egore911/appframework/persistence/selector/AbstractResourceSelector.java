@@ -35,7 +35,7 @@ public abstract class AbstractResourceSelector<T extends IntegerDbObject> extend
 	}
 
 	public AbstractResourceSelector<T> withId(Integer id) {
-		this.ids = Collections.singleton(id);
+		ids = Collections.singleton(id);
 		return this;
 	}
 
