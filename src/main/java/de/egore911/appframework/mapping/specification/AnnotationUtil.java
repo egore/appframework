@@ -81,7 +81,6 @@ public class AnnotationUtil {
 		return null;
 	}
 
-	@Nullable
 	private static boolean isAnnotated(@Nonnull AnnotatedElement element, @Nonnull String annotationClassName) {
 		return getAnnotation(element, annotationClassName) != null;
 	}

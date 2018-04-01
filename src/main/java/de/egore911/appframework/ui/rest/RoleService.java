@@ -77,7 +77,7 @@ public class RoleService extends AbstractResourceService<Role, RoleEntity> {
 
 	@Override
 	@RequiresPermissions("ADMIN_ROLES")
-	public void delete(Integer id, Subject subject) {
+	public void delete(@Nonnull Integer id, Subject subject) {
 		super.delete(id, subject);
 	}
 

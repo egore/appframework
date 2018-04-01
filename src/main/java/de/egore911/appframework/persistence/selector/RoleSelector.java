@@ -25,9 +25,10 @@ public class RoleSelector extends AbstractResourceSelector<RoleEntity> {
 		return RoleEntity.class;
 	}
 
+	@Nonnull
 	@Override
-	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<RoleEntity> from,
-			CriteriaQuery<?> criteriaQuery) {
+	protected List<Predicate> generatePredicateList(@Nonnull CriteriaBuilder builder, @Nonnull Root<RoleEntity> from,
+													@Nonnull CriteriaQuery<?> criteriaQuery) {
 		List<Predicate> predicates = super.generatePredicateList(builder, from, criteriaQuery);
 
 		if (StringUtils.isNotEmpty(userLogin)) {

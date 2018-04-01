@@ -84,7 +84,7 @@ public class UserService extends AbstractResourceService<User, UserEntity> {
 
 	@Override
 	@RequiresPermissions("ADMIN_USERS")
-	public void delete(Integer id, Subject subject) {
+	public void delete(@Nonnull Integer id, Subject subject) {
 		super.delete(id, subject);
 	}
 

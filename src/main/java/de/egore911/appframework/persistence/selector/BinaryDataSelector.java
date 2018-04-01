@@ -39,15 +39,17 @@ import de.egore911.persistence.selector.AbstractSelector;
  */
 public class BinaryDataSelector extends AbstractSelector<BinaryDataEntity> {
 
+	@Nonnull
 	@Override
 	protected Class<BinaryDataEntity> getEntityClass() {
 		return BinaryDataEntity.class;
 	}
 
+	@Nonnull
 	@Override
-	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<BinaryDataEntity> from,
-			@Nonnull CriteriaQuery<?> criteriaQuery) {
+	protected List<Predicate> generatePredicateList(@Nonnull CriteriaBuilder builder,
+													@Nonnull Root<BinaryDataEntity> from,
+													@Nonnull CriteriaQuery<?> criteriaQuery) {
 		return new ArrayList<>();
 	}
 

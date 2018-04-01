@@ -27,9 +27,10 @@ public class UserSelector extends AbstractResourceSelector<UserEntity> {
 		return UserEntity.class;
 	}
 
+	@Nonnull
 	@Override
-	protected List<Predicate> generatePredicateList(CriteriaBuilder builder, Root<UserEntity> from,
-			CriteriaQuery<?> criteriaQuery) {
+	protected List<Predicate> generatePredicateList(@Nonnull CriteriaBuilder builder, @Nonnull Root<UserEntity> from,
+													@Nonnull CriteriaQuery<?> criteriaQuery) {
 		List<Predicate> predicates = super.generatePredicateList(builder, from, criteriaQuery);
 
 		if (StringUtils.isNotEmpty(login)) {
