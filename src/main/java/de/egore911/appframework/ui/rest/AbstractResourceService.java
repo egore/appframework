@@ -151,18 +151,19 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 	}
 
 	protected void validate(T dto, U entity) {
-		ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-		Validator validator = validatorFactory.getValidator();
-		Set<ConstraintViolation<U>> constraintVioalations = validator.validate(entity);
-		if (!constraintVioalations.isEmpty()) {
-			StringBuilder message = new StringBuilder();
-			for (ConstraintViolation<U> constraintVioalation : constraintVioalations) {
-				if (message.length() > 0) {
-					message.append(", ");
+		try (ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
+			Validator validator = validatorFactory.getValidator();
+			Set<ConstraintViolation<U>> constraintVioalations = validator.validate(entity);
+			if (!constraintVioalations.isEmpty()) {
+				StringBuilder message = new StringBuilder();
+				for (ConstraintViolation<U> constraintVioalation : constraintVioalations) {
+					if (message.length() > 0) {
+						message.append(", ");
+					}
+					message.append(constraintVioalation.getPropertyPath()).append(' ').append(constraintVioalation.getMessage());
 				}
-				message.append(constraintVioalation.getPropertyPath()).append(' ').append(constraintVioalation.getMessage());
+				throw new BadArgumentException(message.toString());
 			}
-			throw new BadArgumentException(message.toString());
 		}
 	}
 
