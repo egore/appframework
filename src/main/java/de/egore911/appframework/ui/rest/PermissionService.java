@@ -22,8 +22,7 @@ public class PermissionService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<String> getPermissions() {
-		List<String> permissions = new ArrayList<>(Permissions.PERMISSIONS);
-		return permissions;
+		return new ArrayList<>(Permissions.PERMISSIONS);
 	}
 
 	@GET
