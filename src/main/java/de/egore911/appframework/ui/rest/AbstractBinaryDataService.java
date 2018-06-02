@@ -70,6 +70,12 @@ public abstract class AbstractBinaryDataService extends AbstractService {
         });
     }
 
+    /**
+     * The implementation of this method is responsible to detach any owner from the binary data object given by the ID.
+     *
+     * @param em entity manager to use to persist the changes (this EM is running in a transaction already)
+     * @param id the ID of the binary data object to be detached
+     */
     protected abstract void nullAndPersistUsers(@Nonnull EntityManager em, @Nonnull Integer id);
 
 }
