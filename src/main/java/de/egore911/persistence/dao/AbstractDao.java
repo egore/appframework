@@ -37,19 +37,19 @@ import de.egore911.persistence.util.EntityManagerUtil;
  */
 public abstract class AbstractDao<T extends DbObject<?>> {
 
-	private static final Logger log = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(AbstractDao.class);
 
 	public List<T> findAll() {
-		if (log.isTraceEnabled()) {
-			log.trace("Selecting all {}s", getClass().getSimpleName());
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("Selecting all {}s", getClass().getSimpleName());
 		}
 		return createSelector().findAll();
 	}
 
 	public List<T> findAll(int offset, int limit) {
-		if (log.isTraceEnabled()) {
-			log.trace("Selecting all {}s from {} to {}", getClass()
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("Selecting all {}s from {} to {}", getClass()
 					.getSimpleName(), offset, offset + limit);
 		}
 		return createSelector()
@@ -59,8 +59,8 @@ public abstract class AbstractDao<T extends DbObject<?>> {
 	}
 
 	public List<T> findAll(int offset, int limit, String sortColumn, boolean asc) {
-		if (log.isTraceEnabled()) {
-			log.trace("Selecting all {}s from {} to {}", getClass()
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("Selecting all {}s from {} to {}", getClass()
 					.getSimpleName(), offset, offset + limit);
 		}
 		return createSelector()
@@ -71,16 +71,16 @@ public abstract class AbstractDao<T extends DbObject<?>> {
 	}
 
 	public T findById(Integer id) {
-		if (log.isTraceEnabled()) {
-			log.trace("Selecting {}", getClass().getSimpleName());
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("Selecting {}", getClass().getSimpleName());
 		}
 		EntityManager em = EntityManagerUtil.getEntityManager();
 		return em.find(getEntityClass(), id);
 	}
 
 	public long count() {
-		if (log.isTraceEnabled()) {
-			log.trace("Selecting all {}s", getClass().getSimpleName());
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("Selecting all {}s", getClass().getSimpleName());
 		}
 		return createSelector().count();
 	}
