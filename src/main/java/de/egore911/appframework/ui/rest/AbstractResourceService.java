@@ -53,8 +53,7 @@ public abstract class AbstractResourceService<T extends AbstractDto, U extends I
 		AbstractResourceSelector<U> selector = (AbstractResourceSelector<U>) getSelector(subject)
 						.withIds(ids)
 						.withSearch(search)
-						.withSortColumn(sortColumn)
-						.withAscending(ascending);
+						.withSortColumn(sortColumn, Boolean.TRUE.equals(ascending));
 		List<U> entities = selector
 				.withOffset(offset)
 				.withLimit(limit)

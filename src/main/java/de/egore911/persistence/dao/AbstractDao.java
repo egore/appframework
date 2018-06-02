@@ -66,8 +66,7 @@ public abstract class AbstractDao<T extends DbObject<?>> {
 		return createSelector()
 				.withOffset(offset)
 				.withLimit(limit)
-				.withSortColumn(sortColumn)
-				.withAscending(asc)
+				.withSortColumn(sortColumn, asc)
 				.findAll();
 	}
 

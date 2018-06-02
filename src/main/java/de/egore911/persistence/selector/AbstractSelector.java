@@ -21,6 +21,7 @@
  */
 package de.egore911.persistence.selector;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,7 +38,10 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import de.egore911.persistence.util.EntityManagerUtil;
 
@@ -112,11 +116,16 @@ public abstract class AbstractSelector<T> {
 
 	@Nonnull
 	protected List<Order> generateOrderList(@Nonnull CriteriaBuilder builder, @Nonnull Root<T> from) {
-		if (StringUtils.isNotEmpty(sortColumn)) {
-			if (!Boolean.FALSE.equals(ascending)) {
-				return Collections.singletonList(builder.asc(from.get(sortColumn)));
+		if (CollectionUtils.isNotEmpty(sortColumns)) {
+			List<Order> result = new ArrayList<>(sortColumns.size());
+			for (Pair<String, Boolean> sortColumn : sortColumns) {
+				if (!Boolean.FALSE.equals(sortColumn.getRight())) {
+				result.add(builder.asc(from.get(sortColumn.getLeft())));
+				} else {
+					result.add(builder.desc(from.get(sortColumn.getLeft())));
+				}
 			}
-			return Collections.singletonList(builder.desc(from.get(sortColumn)));
+			return result;
 		}
 		return getDefaultOrderList(builder, from);
 	}
@@ -127,8 +136,7 @@ public abstract class AbstractSelector<T> {
 
 	private Integer offset;
 	private Integer limit;
-	protected String sortColumn;
-	protected Boolean ascending;
+	protected List<Pair<String, Boolean>> sortColumns;
 
 	public AbstractSelector<T> withOffset(Integer offset) {
 		this.offset = offset;
@@ -140,13 +148,16 @@ public abstract class AbstractSelector<T> {
 		return this;
 	}
 
-	public AbstractSelector<T> withSortColumn(String sortColumn) {
-		this.sortColumn = sortColumn;
-		return this;
-	}
+	public AbstractSelector<T> withSortColumn(String sortColumn, boolean ascending) {
+		if (StringUtils.isEmpty(sortColumn)) {
+			return this;
+		}
 
-	public AbstractSelector<T> withAscending(Boolean ascending) {
-		this.ascending = ascending;
+		if (sortColumns == null) {
+			sortColumns = new ArrayList<>();
+		}
+		sortColumns.add(new ImmutablePair<>(sortColumn, ascending));
+		
 		return this;
 	}
 
